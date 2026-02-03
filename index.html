@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Be My Valentine?</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="captcha" role="group" aria-label="Valentine captcha">
+      <div class="captcha__header">
+        <p class="small">Select all images with</p>
+        <h1 class="big">Who should be Besu's valentine?</h1>
+        <p class="sub">Click verify once there are none left.</p>
+      </div>
+
+      <div class="captcha__gridWrap">
+        <div class="grid" id="grid">
+          <div class="tile correct" data-id="1" data-type="correct">
+            <img
+              src="Nina1.jpeg"
+              alt="nina"
+            />
+          </div>
+          <div
+            class="tile camera"
+            data-id="2"
+            data-type="camera"
+            id="cameraTile"
+          >
+            <div class="cameraOverlay" id="cameraOverlay">
+              Click to enable camera
+            </div>
+            <video id="cameraVideo" playsinline muted></video>
+          </div>
+
+          <div class="tile correct" data-id="3" data-type="correct">
+            His biggest blessing
+          </div>
+
+          <div class="tile" data-id="4" data-type="decoy">
+            Definitely not me
+          </div>
+          <div class="tile correct" data-id="5" data-type="correct">
+            The most beautiful women in the world
+          </div>
+          <div class="tile" data-id="6" data-type="decoy">
+            ew who would want to do that
+          </div>
+
+          <div class="tile correct" data-id="7" data-type="correct">
+            The person that makes him the happiest
+          </div>
+          <div class="tile correct" data-id="8" data-type="correct">
+            <img src="hand-pointing-finger-at-you-vector.jpg" alt="finger-pointing">
+          </div>
+          <div class="tile correct" data-id="9" data-type="correct">
+            The most hardworking dedicated genius
+          </div>
+        </div>
+      </div>
+
+      <div class="captcha__footer">
+        <div class="footerLeft" aria-hidden="true">
+          <span class="icon"></span>
+          <span class="icon"></span>
+          <span class="icon"></span>
+        </div>
+
+        <button class="submit" id="submitBtn" type="button">VERIFY</button>
+      </div>
+    </div>
+    <div class="successOverlay" id="successOverlay" aria-hidden="true">
+      <div class="successBox">
+        <h2>See you on the 14th ❤️</h2>
+        <p>(you’re stuck with me now)</p>
+        <button class="successBtn" id="successBtn" type="button">Sounds Good :)</button>
+      </div>
+    </div>
+    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  </body>
+</html>
