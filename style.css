@@ -1,0 +1,376 @@
+:root {
+  --blue: #2d6cdf;
+  --panel: #2f79d6;
+  --bg: #f2f2f2;
+  --tileBorder: #d2d6dc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial,
+    sans-serif;
+  padding: 24px;
+}
+
+/* Captcha card */
+.captcha {
+  width: min(520px, 95vw);
+  border: 2px solid #cbd5e1;
+  background: white;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Top blue prompt area */
+.captcha__header {
+  background: var(--panel);
+  color: white;
+  padding: 18px 18px 16px;
+}
+
+.captcha__header .small {
+  font-size: 14px;
+  opacity: 0.95;
+  margin: 0 0 6px;
+}
+
+.captcha__header .big {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+.captcha__header .sub {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 8px 0 0;
+}
+
+/* Grid area */
+.captcha__gridWrap {
+  padding: 12px;
+  background: #e9eef7;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.tile {
+  border: 2px solid var(--tileBorder);
+  background: white;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 10px;
+  font-weight: 700;
+  user-select: none;
+}
+
+.tile {
+  cursor: pointer;
+}
+
+.tile.selected {
+  border-color: #2d6cdf;
+  box-shadow: inset 0 0 0 3px #2d6cdf;
+}
+
+.tile.correct::after {
+  content: "✓";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #2d6cdf;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 900;
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease;
+}
+
+.tile.selected.correct::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Needed because we used ::after positioning */
+.tile {
+  position: relative;
+}
+
+/* Footer with submit button */
+.captcha__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 14px 12px;
+  border-top: 2px solid #cbd5e1;
+  background: #f8fafc;
+}
+
+.submit {
+  background: var(--blue);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.submit:active {
+  transform: translateY(1px);
+}
+
+/* Optional: make it look more like a captcha control row */
+.footerLeft {
+  margin-right: auto;
+  display: flex;
+  gap: 10px;
+  opacity: 0.7;
+  font-size: 13px;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #94a3b8;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.captcha__gridWrap {
+  position: relative;
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tile.shrinking {
+  transition: transform 120ms ease, opacity 120ms ease;
+  transform-origin: center;
+}
+
+.tile.runaway {
+  position: absolute;
+  z-index: 50;
+  transition: left 90ms linear, top 90ms linear;
+}
+
+.tile.runaway-placeholder {
+  visibility: hidden;
+}
+
+.captcha {
+  position: relative; /* needed so runaway tile can use this as its space */
+}
+
+.tile.runaway {
+  position: absolute;
+  z-index: 999;
+  pointer-events: auto;
+  transition: left 90ms linear, top 90ms linear, transform 120ms ease;
+}
+
+/* --- Camera tile --- */
+.tile.camera {
+  padding: 0;
+  overflow: hidden;
+  background: #111827; /* dark background for video */
+}
+
+.tile.camera video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.tile.camera.enabled video {
+  opacity: 1;
+}
+
+/* Click-to-enable overlay */
+.cameraOverlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 12px;
+  color: white;
+  font-weight: 800;
+  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.35));
+  cursor: pointer;
+}
+
+.tile.camera.enabled .cameraOverlay {
+  display: none;
+}
+
+/* Optional: tiny "live" badge */
+.tile.camera.enabled::before {
+  content: "LIVE";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(239, 68, 68, 0.92);
+  color: white;
+  z-index: 3;
+}
+
+
+/* Make selection border visible even with video overlay */
+.tile.selected {
+  border: 2px solid #2d6cdf !important;
+  box-shadow: inset 0 0 0 3px #2d6cdf;
+}
+
+/* Ensure video doesn't cover the border */
+.tile.camera video {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure overlay doesn't hide border */
+.cameraOverlay {
+  z-index: 2;
+}
+
+/* Make tile itself the top layer for border */
+.tile.camera {
+  position: relative;
+  overflow: hidden;
+}
+
+.captcha {
+  position: relative;
+}
+
+.tile.teleport {
+  position: absolute;
+  z-index: 1000;
+  transition: left 120ms ease, top 120ms ease, transform 120ms ease, opacity 120ms ease;
+}
+
+.tile.teleport.hide {
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+}
+
+.tile.camera.selected::after {
+  content: "SELECTED";
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(45, 108, 223, 0.92);
+  color: white;
+  z-index: 5;
+}
+
+/* keeps the grid cell but makes it invisible */
+.tile.grid-hidden {
+  visibility: hidden;
+}
+
+/* --- Success overlay --- */
+.successOverlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 99999;
+  padding: 24px;
+}
+
+.successOverlay.show {
+  display: grid;
+}
+
+.successBox {
+  width: min(520px, 92vw);
+  background: white;
+  border-radius: 16px;
+  padding: 22px 18px;
+  text-align: center;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+  animation: popIn 220ms ease;
+}
+
+.successBox h2 {
+  margin: 0 0 6px;
+  font-size: 34px;
+}
+
+.successBox p {
+  margin: 0 0 16px;
+  opacity: 0.75;
+  font-weight: 600;
+}
+
+.successBtn {
+  background: #2d6cdf;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+
